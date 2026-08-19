@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AlertCircle } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 
 const Login = () => {
@@ -34,113 +35,72 @@ const Login = () => {
 
   return (
     <div className="page-center">
-      <div className="card" style={{ width: '100%', maxWidth: '420px' }}>
-        {/* Header */}
-        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-          <Link
-            to="/"
-            style={{
-              fontSize: '1.125rem',
-              fontWeight: 700,
-              color: 'var(--color-primary-400)',
-              textDecoration: 'none',
-              display: 'block',
-              marginBottom: '0.75rem',
-            }}
-          >
-            SkillSync
-          </Link>
-          <h1
-            style={{
-              fontSize: '1.5rem',
-              fontWeight: 700,
-              color: 'var(--color-neutral-50)',
-              marginBottom: '0.375rem',
-            }}
-          >
+      <div style={{ width: '100%', maxWidth: '420px' }}>
+        {/* Logo */}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <img src="/logo.png" alt="SkillSync" style={{ height: '36px', marginBottom: '1.25rem' }} />
+          <h1 style={{ fontSize: '1.625rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.375rem' }}>
             Welcome back
           </h1>
-          <p style={{ color: 'var(--color-neutral-400)', fontSize: '0.9375rem' }}>
+          <p style={{ color: 'var(--color-muted)', fontSize: '0.9375rem' }}>
             Sign in to your account
           </p>
         </div>
 
-        {/* Error Banner */}
-        {error && (
-          <div
-            id="login-error-banner"
-            style={{
-              background: 'rgba(239,68,68,0.1)',
-              border: '1px solid rgba(239,68,68,0.3)',
-              borderRadius: '0.5rem',
-              padding: '0.75rem 1rem',
-              marginBottom: '1.25rem',
-              color: 'var(--color-error)',
-              fontSize: '0.875rem',
-            }}
-          >
-            {error}
-          </div>
-        )}
+        {/* Card */}
+        <div className="card" style={{ padding: '2rem' }}>
+          {/* Error */}
+          {error && (
+            <div className="toast toast-error" id="login-error-banner" style={{ marginBottom: '1.25rem' }}>
+              <AlertCircle size={15} /> {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          <div className="form-group">
-            <label htmlFor="login-email" className="form-label">
-              Email address
-            </label>
-            <input
-              id="login-email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              placeholder="you@example.com"
-              className="form-input"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
+            <div className="form-group">
+              <label htmlFor="login-email" className="form-label">Email address</label>
+              <input
+                id="login-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="you@example.com"
+                className="form-input"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="login-password" className="form-label">
-              Password
-            </label>
-            <input
-              id="login-password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="••••••••"
-              className="form-input"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
+            <div className="form-group">
+              <label htmlFor="login-password" className="form-label">Password</label>
+              <input
+                id="login-password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                placeholder="••••••••"
+                className="form-input"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
 
-          <button
-            id="login-submit-btn"
-            type="submit"
-            className="btn-primary"
-            disabled={isLoading}
-            style={{ width: '100%', marginTop: '0.25rem' }}
-          >
-            {isLoading ? 'Signing in…' : 'Sign in'}
-          </button>
-        </form>
+            <button
+              id="login-submit-btn"
+              type="submit"
+              className="btn btn-primary"
+              disabled={isLoading}
+              style={{ width: '100%', marginTop: '0.25rem', justifyContent: 'center' }}
+            >
+              {isLoading ? 'Signing in…' : 'Sign in'}
+            </button>
+          </form>
+        </div>
 
-        <p
-          style={{
-            textAlign: 'center',
-            marginTop: '1.5rem',
-            color: 'var(--color-neutral-400)',
-            fontSize: '0.875rem',
-          }}
-        >
+        <p style={{ textAlign: 'center', marginTop: '1.25rem', color: 'var(--color-muted)', fontSize: '0.875rem' }}>
           Don't have an account?{' '}
-          <Link
-            to="/register"
-            id="login-register-link"
-            style={{ color: 'var(--color-primary-400)', fontWeight: 600, textDecoration: 'none' }}
-          >
+          <Link to="/register" id="login-register-link"
+            style={{ color: 'var(--color-primary)', fontWeight: 600, textDecoration: 'none' }}>
             Sign up free
           </Link>
         </p>
