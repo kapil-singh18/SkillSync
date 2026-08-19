@@ -10,6 +10,8 @@ const matchRoutes = require('./routes/matchRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const roadmapRoutes = require('./routes/roadmapRoutes');
+const assessmentRoutes = require('./routes/assessmentRoutes');
 
 const app = express();
 
@@ -34,6 +36,8 @@ app.use('/api/matches', matchRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/roadmaps', roadmapRoutes);
+app.use('/api/assessments', assessmentRoutes);
 
 // ─── Centralised error handler (must be last) ─────────────────────────────────
 app.use(errorHandler);

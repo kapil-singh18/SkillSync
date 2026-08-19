@@ -1,8 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Plus, X, CheckCircle, AlertCircle } from 'lucide-react';
+import {
+  Plus,
+  X,
+  CheckCircle,
+  AlertCircle,
+  Award,
+  Star,
+  Map,
+  FileCheck,
+  TrendingUp,
+} from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import useUserStore from '../store/userStore';
 import useAuthStore from '../store/authStore';
+import useRoadmapStore from '../store/roadmapStore';
+import useAssessmentStore from '../store/assessmentStore';
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 const SKILL_LEVELS = ['beginner', 'intermediate', 'advanced'];
@@ -63,6 +75,8 @@ const AddChipInput = ({ placeholder, onAdd }) => {
 const Profile = () => {
   const { user } = useAuthStore();
   const { profile, fetchProfile, updateProfile, isLoading, isSaving, saveSuccess, error, clearError } = useUserStore();
+  const { roadmaps, fetchRoadmaps } = useRoadmapStore();
+  const { history, fetchHistory } = useAssessmentStore();
 
   // Local form state
   const [bio, setBio] = useState('');
@@ -83,7 +97,9 @@ const Profile = () => {
   // Seed form from fetched profile
   useEffect(() => {
     fetchProfile();
-  }, [fetchProfile]);
+    fetchRoadmaps();
+    fetchHistory();
+  }, [fetchProfile, fetchRoadmaps, fetchHistory]);
 
   useEffect(() => {
     if (profile) {
@@ -135,6 +151,11 @@ const Profile = () => {
   };
   const removeSlot = (i) => setAvailability((prev) => prev.filter((_, idx) => idx !== i));
 
+  // ── Stats Calculations ──
+  const completedRoadmaps = roadmaps.filter((r) => r.progressPercent === 100).length;
+  const inProgressRoadmaps = roadmaps.filter((r) => r.progressPercent < 100).length;
+  const passedAssessments = history.filter((h) => h.passed).length;
+
   if (isLoading) {
     return (
       <DashboardLayout>
@@ -156,7 +177,7 @@ const Profile = () => {
         <div>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>Your Profile</h1>
           <p style={{ color: 'var(--color-muted)', fontSize: '0.9375rem', marginTop: '0.25rem' }}>
-            Keep your profile up-to-date for better match results.
+            Track your verified achievements and manage your public peer learning identity.
           </p>
         </div>
         <button
@@ -182,6 +203,79 @@ const Profile = () => {
           <AlertCircle size={16} /> {error}
         </div>
       )}
+
+      {/* ── Progress & Achievements Section ─────────────────── */}
+      <div className="card card-padded" style={{ marginBottom: '1.5rem', background: 'linear-gradient(to right, #FFFFFF, #F8FAFC)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '1.25rem' }}>
+          <TrendingUp size={20} color="var(--color-primary)" />
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-heading)' }}>
+            Progress & Verified Achievements
+          </h2>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1.25rem' }}>
+          <div style={{ padding: '1rem', background: 'white', borderRadius: 'var(--radius-xl)', border: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-muted)', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
+              <Star size={15} color="#F59E0B" /> Total Points
+            </div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>
+              {profile?.points || 0} pts
+            </div>
+          </div>
+
+          <div style={{ padding: '1rem', background: 'white', borderRadius: 'var(--radius-xl)', border: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-muted)', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
+              <Map size={15} color="var(--color-primary)" /> Roadmaps
+            </div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>
+              {completedRoadmaps} <span style={{ fontSize: '0.875rem', fontWeight: 400, color: 'var(--color-muted)' }}>done ({inProgressRoadmaps} active)</span>
+            </div>
+          </div>
+
+          <div style={{ padding: '1rem', background: 'white', borderRadius: 'var(--radius-xl)', border: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-muted)', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
+              <Award size={15} color="#10B981" /> Quizzes Passed
+            </div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>
+              {passedAssessments} <span style={{ fontSize: '0.875rem', fontWeight: 400, color: 'var(--color-muted)' }}>passed</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Skill Levels Badges */}
+        <div>
+          <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-muted)', display: 'block', marginBottom: '0.5rem' }}>
+            VERIFIED SKILL PROFICIENCY
+          </span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            {(profile?.skills || []).length === 0 ? (
+              <span style={{ fontSize: '0.8125rem', color: 'var(--color-muted)' }}>
+                No skills added or assessed yet.
+              </span>
+            ) : (
+              profile.skills.map((s, i) => (
+                <span
+                  key={i}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.375rem',
+                    padding: '0.375rem 0.75rem',
+                    borderRadius: 'var(--radius-full)',
+                    background: s.level === 'advanced' ? '#F3E8FF' : s.level === 'intermediate' ? '#FEF3C7' : '#EFF6FF',
+                    color: s.level === 'advanced' ? '#7E22CE' : s.level === 'intermediate' ? '#D97706' : '#2563EB',
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  <FileCheck size={14} />
+                  {s.name} <span style={{ opacity: 0.7, fontWeight: 500 }}>({s.level})</span>
+                </span>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
 
       <form onSubmit={handleSubmit} id="profile-form">
         {/* ── Basic Info ──────────────────────────────────────── */}

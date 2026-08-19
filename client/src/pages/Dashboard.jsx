@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, AlertCircle, ArrowRight, Users, Star } from 'lucide-react';
+import { Compass, AlertCircle, ArrowRight, Users, Star, Map } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import useAuthStore from '../store/authStore';
 import useUserStore from '../store/userStore';
@@ -115,8 +115,25 @@ const Dashboard = () => {
             </span>
           </Link>
           <Link
-            to="/profile"
-            id="dashboard-profile-btn"
+            to="/roadmap"
+            id="dashboard-roadmap-btn"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '0.75rem',
+              padding: '1rem', borderRadius: 'var(--radius-xl)',
+              background: 'var(--color-primary-light)', textDecoration: 'none',
+              transition: 'filter 0.15s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(0.96)')}
+            onMouseLeave={(e) => (e.currentTarget.style.filter = 'none')}
+          >
+            <Map size={20} color="var(--color-primary)" />
+            <span style={{ fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem' }}>
+              Learning Roadmaps
+            </span>
+          </Link>
+          <Link
+            to="/assessments"
+            id="dashboard-assessments-btn"
             style={{
               display: 'flex', alignItems: 'center', gap: '0.75rem',
               padding: '1rem', borderRadius: 'var(--radius-xl)',
@@ -126,9 +143,9 @@ const Dashboard = () => {
             onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(0.97)')}
             onMouseLeave={(e) => (e.currentTarget.style.filter = 'none')}
           >
-            <Users size={20} color="var(--color-body)" />
+            <Star size={20} color="#F59E0B" />
             <span style={{ fontWeight: 600, color: 'var(--color-heading)', fontSize: '0.9rem' }}>
-              Edit profile
+              Skill Quizzes
             </span>
           </Link>
         </div>

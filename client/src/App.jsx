@@ -10,6 +10,9 @@ import Discover from './pages/Discover';
 import Chat from './pages/Chat';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
+import Roadmap from './pages/Roadmap';
+import RoadmapDetail from './pages/RoadmapDetail';
+import Assessments from './pages/Assessments';
 
 const App = () => {
   return (
@@ -28,6 +31,9 @@ const App = () => {
           <Route path="/chat" element={<Chat />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:id" element={<ProjectDetail />} />
+          <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/roadmap/:id" element={<RoadmapDetail />} />
+          <Route path="/assessments" element={<Assessments />} />
         </Route>
 
         {/* Fallback */}
