@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, AlertCircle, ArrowRight, Users, Star, Map } from 'lucide-react';
+import { Compass, AlertCircle, ArrowRight, Users, Star, Map, Trophy, FileText } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import useAuthStore from '../store/authStore';
 import useUserStore from '../store/userStore';
@@ -132,20 +132,54 @@ const Dashboard = () => {
             </span>
           </Link>
           <Link
-            to="/assessments"
-            id="dashboard-assessments-btn"
+            to="/community"
+            id="dashboard-community-btn"
             style={{
               display: 'flex', alignItems: 'center', gap: '0.75rem',
               padding: '1rem', borderRadius: 'var(--radius-xl)',
-              background: 'var(--color-border-sub)', textDecoration: 'none',
+              background: 'var(--color-primary-light)', textDecoration: 'none',
+              transition: 'filter 0.15s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(0.96)')}
+            onMouseLeave={(e) => (e.currentTarget.style.filter = 'none')}
+          >
+            <Users size={20} color="var(--color-primary)" />
+            <span style={{ fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem' }}>
+              Community
+            </span>
+          </Link>
+          <Link
+            to="/leaderboard"
+            id="dashboard-leaderboard-btn"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '0.75rem',
+              padding: '1rem', borderRadius: 'var(--radius-xl)',
+              background: '#FEF3C7', textDecoration: 'none',
               transition: 'filter 0.15s',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(0.97)')}
             onMouseLeave={(e) => (e.currentTarget.style.filter = 'none')}
           >
-            <Star size={20} color="#F59E0B" />
-            <span style={{ fontWeight: 600, color: 'var(--color-heading)', fontSize: '0.9rem' }}>
-              Skill Quizzes
+            <Trophy size={20} color="#D97706" />
+            <span style={{ fontWeight: 600, color: '#D97706', fontSize: '0.9rem' }}>
+              Leaderboard
+            </span>
+          </Link>
+          <Link
+            to="/resume"
+            id="dashboard-resume-btn"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '0.75rem',
+              padding: '1rem', borderRadius: 'var(--radius-xl)',
+              background: '#F3F4F6', textDecoration: 'none',
+              transition: 'filter 0.15s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(0.97)')}
+            onMouseLeave={(e) => (e.currentTarget.style.filter = 'none')}
+          >
+            <FileText size={20} color="#6B7280" />
+            <span style={{ fontWeight: 600, color: '#374151', fontSize: '0.9rem' }}>
+              Resume AI
             </span>
           </Link>
         </div>

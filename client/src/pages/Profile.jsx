@@ -15,6 +15,7 @@ import useUserStore from '../store/userStore';
 import useAuthStore from '../store/authStore';
 import useRoadmapStore from '../store/roadmapStore';
 import useAssessmentStore from '../store/assessmentStore';
+import useGamificationStore from '../store/gamificationStore';
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 const SKILL_LEVELS = ['beginner', 'intermediate', 'advanced'];
@@ -151,6 +152,10 @@ const Profile = () => {
   };
   const removeSlot = (i) => setAvailability((prev) => prev.filter((_, idx) => idx !== i));
 
+  // ── Gamification stats ──
+  const { myStats, fetchMyStats } = useGamificationStore();
+  useEffect(() => { fetchMyStats(); }, [fetchMyStats]);
+
   // ── Stats Calculations ──
   const completedRoadmaps = roadmaps.filter((r) => r.progressPercent === 100).length;
   const inProgressRoadmaps = roadmaps.filter((r) => r.progressPercent < 100).length;
@@ -243,7 +248,7 @@ const Profile = () => {
         </div>
 
         {/* Skill Levels Badges */}
-        <div>
+        <div style={{ marginBottom: '1.25rem' }}>
           <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-muted)', display: 'block', marginBottom: '0.5rem' }}>
             VERIFIED SKILL PROFICIENCY
           </span>
@@ -275,6 +280,32 @@ const Profile = () => {
             )}
           </div>
         </div>
+
+        {/* Earned Badges */}
+        {myStats?.earnedBadges?.length > 0 && (
+          <div>
+            <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-muted)', display: 'block', marginBottom: '0.5rem' }}>
+              BADGES EARNED ({myStats.earnedBadges.length}/{myStats.totalBadges})
+            </span>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {myStats.earnedBadges.map((badge) => (
+                <div
+                  key={badge._id}
+                  title={badge.description}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '0.375rem',
+                    padding: '0.375rem 0.75rem', borderRadius: '9999px',
+                    background: 'var(--color-primary-light)', border: '1px solid #BFDBFE',
+                    fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-primary)',
+                  }}
+                >
+                  <span>{badge.iconUrl || '🏅'}</span>
+                  {badge.name}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} id="profile-form">

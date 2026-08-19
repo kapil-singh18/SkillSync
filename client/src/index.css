@@ -321,3 +321,14 @@ input, textarea, select { font-family: inherit; }
 .page-center { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1.5rem; background-color: var(--color-page-bg); }
 .divider { height: 1px; background-color: var(--color-border-sub); margin: 1.25rem 0; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ─── Spin animation ─────────────────────────────────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.spin {
+  animation: spin 0.75s linear infinite;
+  display: inline-block;
+}
+

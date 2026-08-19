@@ -13,6 +13,9 @@ import ProjectDetail from './pages/ProjectDetail';
 import Roadmap from './pages/Roadmap';
 import RoadmapDetail from './pages/RoadmapDetail';
 import Assessments from './pages/Assessments';
+import Community from './pages/Community';
+import Leaderboard from './pages/Leaderboard';
+import Resume from './pages/Resume';
 
 const App = () => {
   return (
@@ -34,6 +37,9 @@ const App = () => {
           <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/roadmap/:id" element={<RoadmapDetail />} />
           <Route path="/assessments" element={<Assessments />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/resume" element={<Resume />} />
         </Route>
 
         {/* Fallback */}
@@ -44,3 +50,4 @@ const App = () => {
 };
 
 export default App;
+

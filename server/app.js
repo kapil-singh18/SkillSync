@@ -12,6 +12,9 @@ const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const roadmapRoutes = require('./routes/roadmapRoutes');
 const assessmentRoutes = require('./routes/assessmentRoutes');
+const postRoutes = require('./routes/postRoutes');
+const gamificationRoutes = require('./routes/gamificationRoutes');
+const resumeRoutes = require('./routes/resumeRoutes');
 
 const app = express();
 
@@ -38,6 +41,9 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/roadmaps', roadmapRoutes);
 app.use('/api/assessments', assessmentRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/gamification', gamificationRoutes);
+app.use('/api/resume', resumeRoutes);
 
 // ─── Centralised error handler (must be last) ─────────────────────────────────
 app.use(errorHandler);

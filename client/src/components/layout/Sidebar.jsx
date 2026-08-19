@@ -8,6 +8,8 @@ import {
   Map,
   Award,
   Users,
+  Trophy,
+  FileText,
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -18,8 +20,9 @@ const NAV_ITEMS = [
   { to: '/projects',    icon: FolderKanban,    label: 'Projects' },
   { to: '/roadmap',     icon: Map,             label: 'Roadmaps' },
   { to: '/assessments', icon: Award,           label: 'Assessments' },
-  // ── Coming in later phases ──────────────────────────────────
-  { to: '/community',   icon: Users,           label: 'Community',  disabled: true },
+  { to: '/community',   icon: Users,           label: 'Community' },
+  { to: '/leaderboard', icon: Trophy,          label: 'Leaderboard' },
+  { to: '/resume',      icon: FileText,        label: 'Resume AI' },
 ];
 
 const Sidebar = () => {
@@ -41,29 +44,18 @@ const Sidebar = () => {
 
       {/* ── Nav ──────────────────────────────────────────────── */}
       <nav className="sidebar-nav">
-        {NAV_ITEMS.map(({ to, icon: Icon, label, disabled }) =>
-          disabled ? (
-            <span
-              key={to}
-              className="sidebar-nav-item disabled"
-              title={`${label} — coming soon`}
-            >
-              <Icon size={18} />
-              <span>{label}</span>
-            </span>
-          ) : (
-            <NavLink
-              key={to}
-              to={to}
-              className={({ isActive }) =>
-                `sidebar-nav-item${isActive ? ' active' : ''}`
-              }
-            >
-              <Icon size={18} />
-              <span>{label}</span>
-            </NavLink>
-          )
-        )}
+        {NAV_ITEMS.map(({ to, icon: Icon, label }) => (
+          <NavLink
+            key={to}
+            to={to}
+            className={({ isActive }) =>
+              `sidebar-nav-item${isActive ? ' active' : ''}`
+            }
+          >
+            <Icon size={18} />
+            <span>{label}</span>
+          </NavLink>
+        ))}
       </nav>
 
       {/* ── Bottom label ─────────────────────────────────────── */}
@@ -75,10 +67,11 @@ const Sidebar = () => {
           color: 'var(--color-muted)',
         }}
       >
-        Phase 4 — MVP
+        Phase 5 — MVP
       </div>
     </aside>
   );
 };
 
 export default Sidebar;
+
