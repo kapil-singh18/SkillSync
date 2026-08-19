@@ -7,6 +7,9 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Discover from './pages/Discover';
+import Chat from './pages/Chat';
+import Projects from './pages/Projects';
+import ProjectDetail from './pages/ProjectDetail';
 
 const App = () => {
   return (
@@ -22,6 +25,9 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/discover" element={<Discover />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
         </Route>
 
         {/* Fallback */}

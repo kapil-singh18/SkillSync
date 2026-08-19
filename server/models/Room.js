@@ -1,5 +1,37 @@
 const mongoose = require('mongoose');
 
-// To be implemented in later phase
+const roomSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Room name is required'],
+      trim: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+    },
+    type: {
+      type: String,
+      enum: ['study_room'],
+      default: 'study_room',
+    },
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-module.exports = mongoose.model('Room', new mongoose.Schema({}));
+const Room = mongoose.model('Room', roomSchema);
+module.exports = Room;

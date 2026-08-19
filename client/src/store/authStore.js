@@ -60,6 +60,8 @@ const useAuthStore = create((set) => ({
   // ─── Logout ────────────────────────────────────────────────────────────────
   logout: () => {
     localStorage.removeItem(TOKEN_KEY);
+    // Disconnect socket if active
+    import('../lib/socket').then(({ disconnectSocket }) => disconnectSocket());
     set({ user: null, token: null, isAuthenticated: false, error: null });
   },
 
