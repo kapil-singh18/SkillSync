@@ -29,7 +29,7 @@ const Sidebar = () => {
           <img
             src="/skillsync.svg"
             alt="SkillSync"
-            style={{ height: '36px', width: 'auto', objectFit: 'contain', display: 'block' }}
+            style={{ height: '32px', width: 'auto', objectFit: 'contain', display: 'block' }}
           />
           <p style={{ fontSize: '0.7rem', color: 'var(--color-muted)', lineHeight: 1.3, margin: 0 }}>
             Learn together. Grow faster.

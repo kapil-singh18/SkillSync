@@ -2,11 +2,12 @@
 
 /* ─── Design System Tokens ──────────────────────────────────────────────────── */
 @theme {
-  /* Primary — Indigo */
-  --color-primary:        #4F46E5;
-  --color-primary-hover:  #4338CA;
-  --color-primary-light:  #EEF2FF;
-  --color-primary-ring:   rgba(79, 70, 229, 0.3);
+  /* Primary — Blue (matching SkillSync logo) */
+  --color-primary:        #2563EB;
+  --color-primary-hover:  #1D4ED8;
+  --color-primary-light:  #EFF6FF;
+  --color-primary-accent: #DBEAFE;
+  --color-primary-ring:   rgba(37, 99, 235, 0.3);
 
   /* Neutrals */
   --color-heading:    #111827;
@@ -90,7 +91,7 @@ input, textarea, select { font-family: inherit; }
   color: var(--color-primary);
   border: 1.5px solid transparent;
 }
-.btn-secondary:hover:not(:disabled) { background-color: #E0E7FF; }
+.btn-secondary:hover:not(:disabled) { background-color: #DBEAFE; }
 
 .btn-outline {
   background-color: transparent;

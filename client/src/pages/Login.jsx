@@ -38,7 +38,7 @@ const Login = () => {
       <div style={{ width: '100%', maxWidth: '420px' }}>
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <img src="/skillsync.svg" alt="SkillSync" style={{ height: '40px', width: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto 1.25rem' }} />
+          <img src="/skillsync.svg" alt="SkillSync" style={{ height: '36px', width: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto 1.25rem' }} />
           <h1 style={{ fontSize: '1.625rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.375rem' }}>
             Welcome back
           </h1>

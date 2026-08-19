@@ -12,7 +12,7 @@ const STATUSES = ['todo', 'in_progress', 'done'];
 const STATUS_LABELS = { todo: 'To Do', in_progress: 'In Progress', done: 'Done' };
 const STATUS_COLORS = {
   todo: { bg: '#F3F4F6', text: '#374151' },
-  in_progress: { bg: '#EEF2FF', text: '#4F46E5' },
+  in_progress: { bg: '#EFF6FF', text: '#2563EB' },
   done: { bg: '#F0FDF4', text: '#15803D' },
 };
 
