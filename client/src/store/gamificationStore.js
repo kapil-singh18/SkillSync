@@ -26,8 +26,8 @@ const useGamificationStore = create((set) => ({
     try {
       const { data } = await axiosInstance.get('/gamification/badges');
       set({ allBadges: data.data });
-    } catch (err) {
-      console.error('Failed to load badges:', err);
+    } catch {
+      // Graceful fallback
     }
   },
 
@@ -36,8 +36,8 @@ const useGamificationStore = create((set) => ({
     try {
       const { data } = await axiosInstance.get('/gamification/me');
       set({ myStats: data.data });
-    } catch (err) {
-      console.error('Failed to load stats:', err);
+    } catch {
+      // Graceful fallback
     }
   },
 }));

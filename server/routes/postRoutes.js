@@ -9,12 +9,14 @@ const {
   getComments,
   addComment,
 } = require('../controllers/postController');
+const { createPostValidator, createCommentValidator } = require('../middleware/validators');
 
 router.get('/', protect, getFeed);
-router.post('/', protect, createPost);
+router.post('/', protect, createPostValidator, createPost);
 router.put('/:id/upvote', protect, toggleUpvote);
 router.delete('/:id', protect, deletePost);
 router.get('/:id/comments', protect, getComments);
-router.post('/:id/comments', protect, addComment);
+router.post('/:id/comments', protect, createCommentValidator, addComment);
 
 module.exports = router;
+

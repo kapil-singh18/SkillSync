@@ -5,9 +5,7 @@ import {
   Clock,
   BookOpen,
   CheckCircle2,
-  Circle,
   AlertCircle,
-  Sparkles,
 } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import useRoadmapStore from '../store/roadmapStore';

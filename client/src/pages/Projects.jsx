@@ -3,10 +3,6 @@ import { Plus, X, Users, Briefcase, Zap, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import useProjectStore from '../store/projectStore';
-import useAuthStore from '../store/authStore';
-
-const getInitials = (name = '') =>
-  name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('');
 
 // ─── Create Project Modal ─────────────────────────────────────────────────────
 const CreateProjectModal = ({ onClose, onCreate }) => {
@@ -149,7 +145,6 @@ const ProjectCard = ({ project, isMine, onJoin }) => {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 const Projects = () => {
-  const { user } = useAuthStore();
   const { projects, myProjects, isLoading, fetchProjects, fetchMyProjects, createProject, joinProject, error } = useProjectStore();
   const [tab, setTab] = useState('browse');
   const [showCreate, setShowCreate] = useState(false);

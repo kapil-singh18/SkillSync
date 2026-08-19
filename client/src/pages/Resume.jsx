@@ -54,8 +54,8 @@ const Resume = () => {
     if (!selectedFile) return;
     try {
       await analyzeResume(selectedFile);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // Error handled by store
     }
   };
 

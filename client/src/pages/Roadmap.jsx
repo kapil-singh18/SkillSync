@@ -7,7 +7,6 @@ import {
   Trash2,
   AlertCircle,
   Loader2,
-  CheckCircle2,
 } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import useRoadmapStore from '../store/roadmapStore';

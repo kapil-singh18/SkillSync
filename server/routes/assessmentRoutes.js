@@ -6,11 +6,13 @@ const {
   submitAssessment,
   getHistory,
 } = require('../controllers/assessmentController');
+const { generateAssessmentValidator, submitAssessmentValidator } = require('../middleware/validators');
 
 router.use(protect);
 
-router.post('/generate', generateOrGetAssessment);
-router.post('/:id/submit', submitAssessment);
+router.post('/generate', generateAssessmentValidator, generateOrGetAssessment);
+router.post('/:id/submit', submitAssessmentValidator, submitAssessment);
 router.get('/history', getHistory);
 
 module.exports = router;
+

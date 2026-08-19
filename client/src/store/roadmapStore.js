@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import * as roadmapApi from '../api/roadmapApi';
 
-const useRoadmapStore = create((set, get) => ({
+const useRoadmapStore = create((set) => ({
   roadmaps: [],
   activeRoadmap: null,
   isLoading: false,

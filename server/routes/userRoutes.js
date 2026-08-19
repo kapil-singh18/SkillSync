@@ -3,6 +3,7 @@ const router = express.Router();
 
 const { getProfile, updateProfile, getUserById } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
+const { updateProfileValidator } = require('../middleware/validators');
 
 // All user routes require authentication
 router.use(protect);
@@ -11,9 +12,10 @@ router.use(protect);
 router.get('/profile', getProfile);
 
 // PUT  /api/users/profile
-router.put('/profile', updateProfile);
+router.put('/profile', updateProfileValidator, updateProfile);
 
 // GET  /api/users/:id  (must be after /profile to avoid conflict)
 router.get('/:id', getUserById);
 
 module.exports = router;
+

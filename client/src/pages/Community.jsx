@@ -52,8 +52,8 @@ const Community = () => {
       await createPost(newContent.trim(), tags);
       setNewContent('');
       setNewTags('');
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // Error handled by store/toast
     } finally {
       setIsPosting(false);
     }
@@ -83,8 +83,8 @@ const Community = () => {
         [postId]: [newComment, ...(prev[postId] || [])],
       }));
       setCommentInput((prev) => ({ ...prev, [postId]: '' }));
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // Error handled by store/toast
     }
   };
 

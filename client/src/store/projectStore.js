@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import * as projectApi from '../api/projectApi';
 
-const useProjectStore = create((set, get) => ({
+const useProjectStore = create((set) => ({
   projects: [],
   myProjects: [],
   activeProject: null,

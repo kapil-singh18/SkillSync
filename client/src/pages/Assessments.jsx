@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
-  Award,
   Sparkles,
   CheckCircle2,
   XCircle,
-  Clock,
   ArrowRight,
   RotateCcw,
   AlertCircle,

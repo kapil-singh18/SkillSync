@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import ErrorBoundary from './components/ErrorBoundary';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -16,38 +17,40 @@ import Assessments from './pages/Assessments';
 import Community from './pages/Community';
 import Leaderboard from './pages/Leaderboard';
 import Resume from './pages/Resume';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* Protected routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/discover" element={<Discover />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:id" element={<ProjectDetail />} />
-          <Route path="/roadmap" element={<Roadmap />} />
-          <Route path="/roadmap/:id" element={<RoadmapDetail />} />
-          <Route path="/assessments" element={<Assessments />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/resume" element={<Resume />} />
-        </Route>
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/discover" element={<Discover />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
+            <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/roadmap/:id" element={<RoadmapDetail />} />
+            <Route path="/assessments" element={<Assessments />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/resume" element={<Resume />} />
+          </Route>
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+          {/* 404 Catch-all */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 };
 
 export default App;
-

@@ -67,7 +67,7 @@ const Sidebar = () => {
           color: 'var(--color-muted)',
         }}
       >
-        Phase 5 — MVP
+        SkillSync v1.0
       </div>
     </aside>
   );

@@ -42,8 +42,8 @@ const usePostStore = create((set, get) => ({
       set((s) => ({
         posts: s.posts.map((p) => (p._id === postId ? data.data : p)),
       }));
-    } catch (err) {
-      console.error('Upvote failed:', err);
+    } catch {
+      // Non-blocking UI action
     }
   },
 
@@ -62,8 +62,7 @@ const usePostStore = create((set, get) => ({
     try {
       const { data } = await axiosInstance.get(`/posts/${postId}/comments`);
       return data.data;
-    } catch (err) {
-      console.error('Failed to load comments:', err);
+    } catch {
       return [];
     }
   },

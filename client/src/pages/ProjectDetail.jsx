@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Plus, X, ChevronRight, AlertCircle, Users } from 'lucide-react';
+import { ArrowLeft, Plus, X, AlertCircle, Users } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import useProjectStore from '../store/projectStore';
 import useAuthStore from '../store/authStore';
@@ -71,7 +71,7 @@ const AddTaskModal = ({ projectId, members, onClose, onCreate }) => {
 };
 
 // ─── Task Card ────────────────────────────────────────────────────────────────
-const TaskCard = ({ task, members, onUpdate, onDelete }) => {
+const TaskCard = ({ task, onUpdate, onDelete }) => {
   const [status, setStatus] = useState(task.status);
 
   const handleStatusChange = async (newStatus) => {
