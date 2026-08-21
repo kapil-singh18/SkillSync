@@ -11,6 +11,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import PageHeader from '../components/common/PageHeader';
 import useUserStore from '../store/userStore';
 import useAuthStore from '../store/authStore';
 import useRoadmapStore from '../store/roadmapStore';
@@ -80,12 +81,12 @@ const Profile = () => {
   const { history, fetchHistory } = useAssessmentStore();
 
   // Local form state
-  const [bio, setBio] = useState('');
-  const [role, setRole] = useState('student');
-  const [skills, setSkills] = useState([]);
-  const [interests, setInterests] = useState([]);
-  const [learningGoals, setLearningGoals] = useState([]);
-  const [availability, setAvailability] = useState([]);
+  const [bio, setBio] = useState(profile?.bio || '');
+  const [role, setRole] = useState(profile?.role || 'student');
+  const [skills, setSkills] = useState(profile?.skills || []);
+  const [interests, setInterests] = useState(profile?.interests || []);
+  const [learningGoals, setLearningGoals] = useState(profile?.learningGoals || []);
+  const [availability, setAvailability] = useState(profile?.availability || []);
 
   // Skill adder local state
   const [newSkillName, setNewSkillName] = useState('');
@@ -97,21 +98,19 @@ const Profile = () => {
 
   // Seed form from fetched profile
   useEffect(() => {
-    fetchProfile();
+    fetchProfile().then((u) => {
+      if (u) {
+        setBio(u.bio || '');
+        setRole(u.role || 'student');
+        setSkills(u.skills || []);
+        setInterests(u.interests || []);
+        setLearningGoals(u.learningGoals || []);
+        setAvailability(u.availability || []);
+      }
+    });
     fetchRoadmaps();
     fetchHistory();
   }, [fetchProfile, fetchRoadmaps, fetchHistory]);
-
-  useEffect(() => {
-    if (profile) {
-      setBio(profile.bio || '');
-      setRole(profile.role || 'student');
-      setSkills(profile.skills || []);
-      setInterests(profile.interests || []);
-      setLearningGoals(profile.learningGoals || []);
-      setAvailability(profile.availability || []);
-    }
-  }, [profile]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -178,24 +177,22 @@ const Profile = () => {
   return (
     <DashboardLayout>
       {/* ── Page header ──────────────────────────────────────── */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.75rem' }}>
-        <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>Your Profile</h1>
-          <p style={{ color: 'var(--color-muted)', fontSize: '0.9375rem', marginTop: '0.25rem' }}>
-            Track your verified achievements and manage your public peer learning identity.
-          </p>
-        </div>
-        <button
-          id="profile-save-btn"
-          type="button"
-          onClick={handleSubmit}
-          className="btn btn-primary"
-          disabled={isSaving}
-          style={{ minWidth: '100px' }}
-        >
-          {isSaving ? 'Saving…' : 'Save changes'}
-        </button>
-      </div>
+      <PageHeader
+        title="Your Profile"
+        subtitle="Track your verified achievements and manage your public peer learning identity."
+        action={
+          <button
+            id="profile-save-btn"
+            type="button"
+            onClick={handleSubmit}
+            className="btn btn-primary"
+            disabled={isSaving}
+            style={{ minWidth: '110px' }}
+          >
+            {isSaving ? 'Saving…' : 'Save changes'}
+          </button>
+        }
+      />
 
       {/* ── Toast feedback ───────────────────────────────────── */}
       {saveSuccess && (

@@ -11,6 +11,7 @@ import {
   Trophy,
   FileText,
 } from 'lucide-react';
+import Logo from '../common/Logo';
 
 const NAV_ITEMS = [
   { to: '/dashboard',   icon: LayoutDashboard, label: 'Dashboard' },
@@ -29,17 +30,8 @@ const Sidebar = () => {
   return (
     <aside className="sidebar">
       {/* ── Logo ─────────────────────────────────────────────── */}
-      <div className="sidebar-logo" style={{ padding: '1.25rem 1.25rem 1rem' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', width: '100%' }}>
-          <img
-            src="/skillsync.svg"
-            alt="SkillSync"
-            style={{ height: '40px', width: 'auto', objectFit: 'contain', display: 'block' }}
-          />
-          <p style={{ fontSize: '0.7rem', color: 'var(--color-muted)', lineHeight: 1.3, margin: 0 }}>
-            Learn together. Grow faster.
-          </p>
-        </div>
+      <div className="sidebar-logo">
+        <Logo size="md" subtitle="Learn together. Grow faster." />
       </div>
 
       {/* ── Nav ──────────────────────────────────────────────── */}

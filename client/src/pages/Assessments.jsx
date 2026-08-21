@@ -10,6 +10,8 @@ import {
   FileCheck,
 } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import PageHeader from '../components/common/PageHeader';
+import EmptyState from '../components/common/EmptyState';
 import useAssessmentStore from '../store/assessmentStore';
 import useUserStore from '../store/userStore';
 
@@ -91,14 +93,10 @@ const Assessments = () => {
   return (
     <DashboardLayout>
       {/* ── Page Header ─────────────────────────────────────── */}
-      <div style={{ marginBottom: '1.75rem' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>
-          Skill Assessments
-        </h1>
-        <p style={{ color: 'var(--color-muted)', fontSize: '0.9375rem', marginTop: '0.25rem' }}>
-          Test your technical proficiency, level up your profile, and earn points.
-        </p>
-      </div>
+      <PageHeader
+        title="Skill Assessments"
+        subtitle="Test your technical proficiency, level up your profile, and earn points."
+      />
 
       {error && (
         <div className="toast toast-error" style={{ marginBottom: '1.5rem' }}>
@@ -429,45 +427,13 @@ const Assessments = () => {
               ))}
             </div>
           ) : history.length === 0 ? (
-            <div
-              className="card"
-              style={{
-                padding: '3rem 1.5rem',
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.75rem',
-              }}
-            >
-              <div
-                style={{
-                  width: '3.5rem',
-                  height: '3.5rem',
-                  borderRadius: '50%',
-                  background: 'var(--color-primary-light)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <FileCheck size={24} color="var(--color-primary)" />
-              </div>
-              <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-heading)' }}>
-                No assessment attempts yet
-              </h3>
-              <p style={{ fontSize: '0.875rem', color: 'var(--color-muted)' }}>
-                Take your first skill quiz to establish your verified skill badge.
-              </p>
-              <button
-                type="button"
-                onClick={() => setTab('take')}
-                className="btn btn-primary btn-sm"
-              >
-                Take Assessment
-              </button>
-            </div>
+            <EmptyState
+              icon={FileCheck}
+              title="No assessment attempts yet"
+              description="Take your first skill quiz to establish your verified skill proficiency on your profile."
+              actionLabel="Take Assessment"
+              onAction={() => setTab('take')}
+            />
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {history.map((att) => {

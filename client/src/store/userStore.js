@@ -13,6 +13,7 @@ const useUserStore = create((set) => ({
     try {
       const { data } = await fetchMyProfile();
       set({ profile: data.user, isLoading: false });
+      return data.user;
     } catch (err) {
       set({
         error: err.response?.data?.message || 'Failed to load profile',

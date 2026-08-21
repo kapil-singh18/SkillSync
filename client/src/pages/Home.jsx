@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Compass, Users, Zap } from 'lucide-react';
+import Logo from '../components/common/Logo';
 
 const FeaturePill = ({ icon: Icon, text }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem',
@@ -20,7 +21,7 @@ const Home = () => {
         alignItems: 'center', justifyContent: 'space-between',
         position: 'sticky', top: 0, zIndex: 40,
       }}>
-        <img src="/skillsync.svg" alt="SkillSync" style={{ height: '32px', width: 'auto', objectFit: 'contain', display: 'block' }} />
+        <Logo size="md" clickable to="/" />
         <div style={{ display: 'flex', gap: '0.75rem' }}>
           <Link to="/login" className="btn btn-outline btn-sm" id="nav-login-btn">Log in</Link>
           <Link to="/register" className="btn btn-primary btn-sm" id="nav-register-btn">Get started</Link>

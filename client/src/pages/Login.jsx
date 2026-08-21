@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
 import useAuthStore from '../store/authStore';
+import Logo from '../components/common/Logo';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,8 +38,8 @@ const Login = () => {
     <div className="page-center">
       <div style={{ width: '100%', maxWidth: '420px' }}>
         {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <img src="/skillsync.svg" alt="SkillSync" style={{ height: '36px', width: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto 1.25rem' }} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '2rem' }}>
+          <Logo size="lg" clickable to="/" style={{ marginBottom: '1.25rem' }} />
           <h1 style={{ fontSize: '1.625rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.375rem' }}>
             Welcome back
           </h1>

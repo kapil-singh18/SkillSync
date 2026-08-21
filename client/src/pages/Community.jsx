@@ -10,6 +10,8 @@ import {
   Filter,
 } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import PageHeader from '../components/common/PageHeader';
+import EmptyState from '../components/common/EmptyState';
 import usePostStore from '../store/postStore';
 import useAuthStore from '../store/authStore';
 
@@ -98,14 +100,10 @@ const Community = () => {
   return (
     <DashboardLayout>
       {/* ── Header ──────────────────────────────────────────── */}
-      <div style={{ marginBottom: '1.75rem' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>
-          Community Feed
-        </h1>
-        <p style={{ color: 'var(--color-muted)', marginTop: '0.25rem', fontSize: '0.9375rem' }}>
-          Share knowledge, ask questions, and connect with peers.
-        </p>
-      </div>
+      <PageHeader
+        title="Community Feed"
+        subtitle="Share knowledge, ask questions, and connect with fellow learners."
+      />
 
       {/* ── Compose ─────────────────────────────────────────── */}
       <div className="card" style={{ padding: '1.25rem 1.5rem', marginBottom: '1.5rem' }}>
@@ -215,10 +213,11 @@ const Community = () => {
           Loading feed…
         </div>
       ) : posts.length === 0 ? (
-        <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-muted)' }}>
-          <MessageSquare size={32} style={{ margin: '0 auto 0.75rem', opacity: 0.4 }} />
-          <p>No posts yet. Be the first to share something!</p>
-        </div>
+        <EmptyState
+          icon={MessageSquare}
+          title="No posts yet in this topic"
+          description={filterTag ? `No one has posted under #${filterTag} yet. Share the first post!` : 'Be the first to share a question, resource, or tip with the community!'}
+        />
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {posts.map((post) => {

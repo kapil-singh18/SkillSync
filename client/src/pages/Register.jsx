@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
 import useAuthStore from '../store/authStore';
+import Logo from '../components/common/Logo';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -24,8 +25,8 @@ const Register = () => {
       setError('All fields are required.');
       return;
     }
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters.');
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters.');
       return;
     }
 
@@ -41,8 +42,8 @@ const Register = () => {
     <div className="page-center">
       <div style={{ width: '100%', maxWidth: '420px' }}>
         {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <img src="/skillsync.svg" alt="SkillSync" style={{ height: '36px', width: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto 1.25rem' }} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '2rem' }}>
+          <Logo size="lg" clickable to="/" style={{ marginBottom: '1.25rem' }} />
           <h1 style={{ fontSize: '1.625rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '0.375rem' }}>
             Create your account
           </h1>
@@ -93,7 +94,7 @@ const Register = () => {
               <label htmlFor="register-password" className="form-label">
                 Password
                 <span style={{ color: 'var(--color-muted)', fontWeight: 400, marginLeft: '0.375rem', fontSize: '0.8125rem' }}>
-                  (min. 6 characters)
+                  (min. 8 characters)
                 </span>
               </label>
               <input

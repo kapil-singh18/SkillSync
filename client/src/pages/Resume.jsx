@@ -11,6 +11,7 @@ import {
   X,
 } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import PageHeader from '../components/common/PageHeader';
 import useResumeStore from '../store/resumeStore';
 
 const LEVEL_COLORS = {
@@ -67,19 +68,15 @@ const Resume = () => {
 
   return (
     <DashboardLayout>
-      {/* ── Header ──────────────────────────────────────────── */}
-      <div style={{ marginBottom: '1.75rem' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>
-          Resume Analyzer
-        </h1>
-        <p style={{ color: 'var(--color-muted)', marginTop: '0.25rem', fontSize: '0.9375rem' }}>
-          Upload your resume for AI-powered skill analysis and project recommendations.
-        </p>
-      </div>
+      {/* ── Page Header ──────────────────────────────────────── */}
+      <PageHeader
+        title="Resume Analyzer"
+        subtitle="Upload your resume for AI-powered skill extraction, gap analysis, and recommended projects."
+      />
 
       {/* ── Upload Section ──────────────────────────────────── */}
       {!analysis && (
-        <div className="card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
+        <div className="card card-padded" style={{ marginBottom: '1.5rem' }}>
           {/* Drop zone */}
           <div
             onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}

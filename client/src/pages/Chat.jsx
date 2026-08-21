@@ -186,8 +186,16 @@ const Chat = () => {
               ))
             ) : tab === 'dms' ? (
               conversations.length === 0 ? (
-                <div style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--color-muted)', fontSize: '0.875rem' }}>
-                  No conversations yet.<br />Connect with peers to start chatting.
+                <div style={{ padding: '2.5rem 1rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '2.75rem', height: '2.75rem', borderRadius: '50%', background: 'var(--color-primary-light)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <MessageSquare size={18} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-heading)' }}>No messages yet</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginTop: '0.25rem', lineHeight: 1.4 }}>
+                      Connect with peers from Discover to start chatting.
+                    </div>
+                  </div>
                 </div>
               ) : (
                 conversations.map((conv) => (
@@ -216,8 +224,8 @@ const Chat = () => {
                   <Plus size={14} /> New room
                 </button>
                 {rooms.length === 0 ? (
-                  <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--color-muted)', fontSize: '0.875rem' }}>
-                    No rooms yet. Create one!
+                  <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--color-muted)', fontSize: '0.8125rem', lineHeight: 1.4 }}>
+                    No rooms yet. Create a study room to chat with multiple peers!
                   </div>
                 ) : (
                   rooms.map((room) => (
@@ -244,12 +252,15 @@ const Chat = () => {
         {/* ── Right panel ─────────────────────────────────────── */}
         <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           {!activeThread ? (
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', padding: '2rem' }}>
               <div style={{ width: '3.5rem', height: '3.5rem', borderRadius: '50%', background: 'var(--color-primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <MessageSquare size={22} color="var(--color-primary)" />
               </div>
-              <p style={{ color: 'var(--color-muted)', fontSize: '0.9375rem', textAlign: 'center' }}>
-                Select a conversation or room to start chatting
+              <h3 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--color-heading)', margin: 0 }}>
+                Select a conversation
+              </h3>
+              <p style={{ color: 'var(--color-muted)', fontSize: '0.875rem', textAlign: 'center', maxWidth: '320px', margin: 0, lineHeight: 1.5 }}>
+                Choose a direct message from the left or join a study room to start chatting in real-time.
               </p>
             </div>
           ) : (

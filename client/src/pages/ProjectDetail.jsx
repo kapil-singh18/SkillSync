@@ -245,7 +245,7 @@ const ProjectDetail = () => {
       </div>
 
       {/* Task board */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
         {STATUSES.map((s) => (
           <TaskColumn
             key={s}

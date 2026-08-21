@@ -7,6 +7,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import PageHeader from '../components/common/PageHeader';
 import useGamificationStore from '../store/gamificationStore';
 import useAuthStore from '../store/authStore';
 
@@ -29,49 +30,44 @@ const Leaderboard = () => {
 
   return (
     <DashboardLayout>
-      {/* ── Header ──────────────────────────────────────────── */}
-      <div style={{ marginBottom: '1.75rem' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-heading)' }}>
-          Leaderboard &amp; Badges
-        </h1>
-        <p style={{ color: 'var(--color-muted)', marginTop: '0.25rem', fontSize: '0.9375rem' }}>
-          Earn points, unlock badges, and climb the ranks.
-        </p>
-      </div>
+      {/* ── Page Header ──────────────────────────────────────── */}
+      <PageHeader
+        title="Leaderboard & Badges"
+        subtitle="Earn points through quizzes, roadmaps, and community participation to unlock badges and rank up."
+      />
 
       {/* ── My Stats Card ───────────────────────────────────── */}
       {myStats && (
         <div
-          className="card"
+          className="card card-padded"
           style={{
-            padding: '1.5rem',
             marginBottom: '1.5rem',
             background: 'linear-gradient(135deg, var(--color-primary-light), #DBEAFE)',
             borderLeft: '4px solid var(--color-primary)',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-            <div>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: 'var(--color-primary)', marginBottom: '0.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-primary)', marginBottom: '0.25rem' }}>
                 Your Rank
               </div>
-              <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-heading)' }}>
+              <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-heading)', lineHeight: 1 }}>
                 #{myStats.rank}
               </div>
             </div>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: 'var(--color-primary)', marginBottom: '0.25rem' }}>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-primary)', marginBottom: '0.25rem' }}>
                 Total Points
               </div>
-              <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-heading)' }}>
+              <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-heading)', lineHeight: 1 }}>
                 {myStats.points}
               </div>
             </div>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: 'var(--color-primary)', marginBottom: '0.25rem' }}>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-primary)', marginBottom: '0.25rem' }}>
                 Badges Earned
               </div>
-              <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-heading)' }}>
+              <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-heading)', lineHeight: 1 }}>
                 {myStats.earnedBadges?.length || 0}/{myStats.totalBadges || 0}
               </div>
             </div>
@@ -79,10 +75,10 @@ const Leaderboard = () => {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem' }}>
         {/* ── Leaderboard ─────────────────────────────────────── */}
-        <div className="card" style={{ padding: '1.5rem', minWidth: 0 }}>
-          <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className="card card-padded" style={{ minWidth: 0 }}>
+          <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Trophy size={18} color="var(--color-primary)" /> Top Learners
           </h2>
 
@@ -100,92 +96,133 @@ const Leaderboard = () => {
                   <div
                     key={u._id}
                     style={{
-                      display: 'flex', alignItems: 'center', gap: '0.75rem',
-                      padding: '0.75rem 1rem', borderRadius: 'var(--radius-xl)',
-                      background: rankStyle?.bg || (isMe ? 'var(--color-primary-light)' : 'var(--color-page-bg)'),
-                      border: isMe ? '1px solid var(--color-primary)' : rankStyle ? `1px solid ${rankStyle.border}` : '1px solid transparent',
-                      transition: 'transform 0.1s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      padding: '0.75rem 1rem',
+                      borderRadius: 'var(--radius-xl)',
+                      border: isMe
+                        ? '1.5px solid var(--color-primary)'
+                        : '1px solid var(--color-border)',
+                      background: isMe
+                        ? 'var(--color-primary-light)'
+                        : 'var(--color-page-bg)',
                     }}
                   >
-                    {/* Rank */}
+                    {/* Rank pill */}
                     <div
                       style={{
-                        width: '2rem', height: '2rem', borderRadius: '50%',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontWeight: 700, fontSize: '0.8125rem', flexShrink: 0,
-                        background: rankStyle ? 'rgba(255,255,255,0.7)' : 'var(--color-card)',
-                        color: rankStyle?.color || 'var(--color-muted)',
+                        width: '1.75rem',
+                        height: '1.75rem',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.8125rem',
+                        fontWeight: 700,
+                        background: rankStyle?.bg || (isMe ? 'var(--color-primary-light)' : 'var(--color-page-bg)'),
+                        color: rankStyle?.color || (isMe ? 'var(--color-primary)' : 'var(--color-muted)'),
+                        border: rankStyle ? `1px solid ${rankStyle.border}` : '1px solid var(--color-border)',
+                        flexShrink: 0,
                       }}
                     >
-                      {RankIcon ? <RankIcon size={16} /> : i + 1}
+                      {RankIcon ? <RankIcon size={12} /> : i + 1}
                     </div>
 
                     {/* Avatar */}
                     <div
                       style={{
-                        width: '2rem', height: '2rem', borderRadius: '50%',
-                        background: 'var(--color-primary)', color: '#fff',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontWeight: 600, fontSize: '0.75rem', flexShrink: 0,
+                        width: '2rem',
+                        height: '2rem',
+                        borderRadius: '50%',
+                        background: 'var(--color-primary-light)',
+                        color: 'var(--color-primary)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.8125rem',
+                        fontWeight: 600,
+                        flexShrink: 0,
                       }}
                     >
-                      {u.name?.charAt(0)?.toUpperCase()}
+                      {u.name?.charAt(0)?.toUpperCase() || '?'}
                     </div>
 
-                    {/* Name */}
+                    {/* Name + role */}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{
-                        fontWeight: 600, fontSize: '0.875rem',
-                        color: 'var(--color-heading)',
-                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                      }}>
-                        {u.name} {isMe && <span style={{ fontSize: '0.6875rem', color: 'var(--color-primary)' }}>(you)</span>}
+                      <div
+                        style={{
+                          fontWeight: isMe ? 700 : 500,
+                          fontSize: '0.875rem',
+                          color: 'var(--color-heading)',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {u.name} {isMe && <span style={{ fontSize: '0.75rem', color: 'var(--color-primary)' }}>(you)</span>}
                       </div>
-                      <div style={{ fontSize: '0.6875rem', color: 'var(--color-muted)' }}>
-                        {u.badges?.length || 0} badge{(u.badges?.length || 0) !== 1 ? 's' : ''}
+                      <div style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
+                        {u.role || 'student'}
                       </div>
+                    </div>
+
+                    {/* Badges preview */}
+                    <div style={{ display: 'flex', gap: '0.25rem' }}>
+                      {(u.badges || []).slice(0, 3).map((b) => (
+                        <span key={b._id} title={b.name} style={{ fontSize: '0.875rem' }}>
+                          {b.iconUrl || '🏅'}
+                        </span>
+                      ))}
                     </div>
 
                     {/* Points */}
-                    <div style={{ fontWeight: 700, fontSize: '0.9375rem', color: 'var(--color-heading)', flexShrink: 0 }}>
-                      {u.points || 0}
-                      <span style={{ fontSize: '0.6875rem', fontWeight: 400, color: 'var(--color-muted)', marginLeft: '0.25rem' }}>pts</span>
+                    <div
+                      style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 700,
+                        color: 'var(--color-heading)',
+                        minWidth: '50px',
+                        textAlign: 'right',
+                      }}
+                    >
+                      {u.points} <span style={{ fontSize: '0.7rem', color: 'var(--color-muted)', fontWeight: 400 }}>pts</span>
                     </div>
                   </div>
                 );
               })}
-
-              {leaderboard.length === 0 && (
-                <p style={{ textAlign: 'center', color: 'var(--color-muted)', padding: '1rem', fontSize: '0.875rem' }}>
-                  No data yet
-                </p>
-              )}
             </div>
           )}
         </div>
 
-        {/* ── Badges ──────────────────────────────────────────── */}
-        <div className="card" style={{ padding: '1.5rem', minWidth: 0 }}>
-          <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Award size={18} color="var(--color-primary)" /> All Badges
+        {/* ── Badges ─────────────────────────────────────────── */}
+        <div className="card card-padded" style={{ minWidth: 0 }}>
+          <h2 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-heading)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Award size={18} color="var(--color-primary)" /> Badge Catalog
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+              gap: '0.75rem',
+            }}
+          >
             {allBadges.map((badge) => {
-              const earned = myStats?.earnedBadges?.some((b) => b._id === badge._id);
+              const earned = (myStats?.earnedBadges || []).some(
+                (b) => b._id === badge._id || b.name === badge.name
+              );
               return (
                 <div
                   key={badge._id}
-                  title={badge.criteria || badge.description}
                   style={{
-                    padding: '1rem',
+                    padding: '1rem 0.75rem',
                     borderRadius: 'var(--radius-xl)',
                     border: `1px solid ${earned ? 'var(--color-primary)' : 'var(--color-border)'}`,
                     background: earned ? 'var(--color-primary-light)' : 'var(--color-page-bg)',
                     textAlign: 'center',
-                    opacity: earned ? 1 : 0.55,
+                    opacity: earned ? 1 : 0.6,
                     transition: 'opacity 0.15s, box-shadow 0.15s',
-                    cursor: 'default',
                   }}
                 >
                   <div style={{ fontSize: '1.75rem', marginBottom: '0.375rem' }}>
@@ -198,7 +235,7 @@ const Leaderboard = () => {
                     {badge.description}
                   </div>
                   {earned && (
-                    <div style={{ marginTop: '0.375rem', fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-primary)' }}>
+                    <div style={{ marginTop: '0.375rem', fontSize: '0.625rem', fontWeight: 700, color: 'var(--color-primary)' }}>
                       ✓ EARNED
                     </div>
                   )}
