@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "seed": "node utils/seedDatabase.js",
+    "seed:badges": "node utils/seedBadges.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.15.0",
