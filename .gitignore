@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables
+.env
+**/.env
+
+# Build output
+dist/
+build/
+**/dist/
+**/build/
+
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+*.log
+*.local
+
+# IDE
+.vscode/
+.idea/
+
+# Vite
+vite.config.js.timestamp-*
