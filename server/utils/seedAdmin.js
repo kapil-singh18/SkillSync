@@ -22,14 +22,11 @@ const seed = async () => {
 
     const existing = await User.findOne({ email: ADMIN_EMAIL.toLowerCase() });
     if (existing) {
-      if (existing.role === 'admin') {
-        console.log(`[seed:admin] Admin already exists: ${ADMIN_EMAIL}`);
-      } else {
-        existing.role = 'admin';
-        existing.isEmailVerified = true;
-        await existing.save({ validateBeforeSave: false });
-        console.log(`[seed:admin] Promoted existing user to admin: ${ADMIN_EMAIL}`);
-      }
+      existing.role = 'admin';
+      existing.isEmailVerified = true;
+      existing.password = ADMIN_PASSWORD; // triggers bcrypt pre-save hook
+      await existing.save({ validateBeforeSave: false });
+      console.log(`[seed:admin] Admin synced: ${ADMIN_EMAIL}`);
     } else {
       await User.create({
         name: 'Admin',

@@ -82,6 +82,7 @@ const AppRoutes = () => {
         <Route path="/career" element={<Career />} />
         <Route path="/sessions" element={<Sessions />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/users/:id" element={<PublicProfile />} />
       </Route>
 
       {/* 404 */}

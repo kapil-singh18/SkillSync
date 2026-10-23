@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Github, Linkedin, Globe, GraduationCap, Star, MapPin, Calendar, MessageCircle, UserPlus } from 'lucide-react';
+import { GitBranch, ExternalLink, Globe, GraduationCap, Star, MapPin, Calendar, MessageCircle, UserPlus } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
@@ -226,12 +226,12 @@ const PublicProfile = () => {
           <div className="flex flex-wrap gap-3">
             {links.github && (
               <a href={links.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-[var(--color-accent)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] rounded">
-                <Github size={14} />GitHub
+                <GitBranch size={14} />GitHub
               </a>
             )}
             {links.linkedin && (
               <a href={links.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-[var(--color-accent)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] rounded">
-                <Linkedin size={14} />LinkedIn
+                <ExternalLink size={14} />LinkedIn
               </a>
             )}
             {links.portfolio && (
