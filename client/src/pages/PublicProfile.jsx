@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { GitBranch, ExternalLink, Globe, GraduationCap, Star, MapPin, Calendar, MessageCircle, UserPlus } from 'lucide-react';
+import { GitBranch, ExternalLink, Globe, GraduationCap, Star, MapPin, Calendar, MessageCircle, UserPlus, CheckCircle, Clock } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
+import Button from '../components/ui/Button';
 import Skeleton from '../components/ui/Skeleton';
 import EmptyState from '../components/ui/EmptyState';
+import Modal from '../components/ui/Modal';
+import Textarea from '../components/ui/Textarea';
 import useProfileStore from '../store/profileStore';
+import useConnectionStore from '../store/connectionStore';
+import useAuthStore from '../store/authStore';
 
 const LEVEL_COLORS = { beginner: 'neutral', intermediate: 'accent', advanced: 'success' };
 const SLOT_LABELS = { morning: '🌅', afternoon: '☀️', evening: '🌆', night: '🌙' };
@@ -16,8 +21,18 @@ const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const PublicProfile = () => {
   const { id } = useParams();
   const { fetchPublicProfile, isLoading } = useProfileStore();
+  const { fetchStatus, sendRequest, statusByUser } = useConnectionStore();
+  const { user: me } = useAuthStore();
+
   const [user, setUser] = useState(null);
   const [notFound, setNotFound] = useState(false);
+  const [connectModal, setConnectModal] = useState(false);
+  const [message, setMessage] = useState('');
+  const [isSending, setIsSending] = useState(false);
+
+  const isOwnProfile = me && String(me._id) === String(id);
+  const connectionInfo = statusByUser[String(id)];
+  const connectionStatus = connectionInfo?.status || 'none';
 
   useEffect(() => {
     if (!id) return;
@@ -27,7 +42,24 @@ const PublicProfile = () => {
         else setNotFound(true);
       })
       .catch(() => setNotFound(true));
+
+    if (!isOwnProfile) {
+      fetchStatus(id);
+    }
   }, [id]);
+
+  const handleConnect = async () => {
+    if (!user) return;
+    const isMentorTarget = user.role === 'mentor';
+    setIsSending(true);
+    await sendRequest({
+      userId: id,
+      type: isMentorTarget ? 'mentorship' : 'peer',
+      message: message.trim(),
+    });
+    setIsSending(false);
+    setConnectModal(false);
+  };
 
   if (isLoading && !user) {
     return (
@@ -42,10 +74,10 @@ const PublicProfile = () => {
   if (notFound) {
     return (
       <EmptyState
-        icon={<span className="text-4xl">🔍</span>}
+        icon={GraduationCap}
         title="User not found"
         description="This profile doesn't exist or has been deactivated."
-        action={<Link to="/discover" className="text-sm text-[var(--color-accent)] hover:underline">Browse community</Link>}
+        action={{ label: 'Browse community', onClick: () => (window.location.href = '/discover') }}
       />
     );
   }
@@ -61,6 +93,55 @@ const PublicProfile = () => {
     if (!availMap[day]) availMap[day] = [];
     availMap[day].push(slot);
   });
+
+  // ── Connect button state ───────────────────────────────────────────────────
+  const isAccepting = !isMentor || user.mentorProfile?.acceptingMentees !== false;
+
+  const ConnectButton = () => {
+    if (isOwnProfile) return null;
+
+    if (connectionStatus === 'connected') {
+      return (
+        <div className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-[var(--color-success)]">
+          <CheckCircle size={14} />
+          Connected
+        </div>
+      );
+    }
+
+    if (connectionStatus === 'pending_sent') {
+      return (
+        <div className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border border-[var(--color-border)] text-[var(--color-muted-foreground)]">
+          <Clock size={14} />
+          Request sent
+        </div>
+      );
+    }
+
+    if (connectionStatus === 'pending_received') {
+      return (
+        <Link to="/discover?tab=requests">
+          <Button variant="outline" size="md">
+            <Bell size={14} />
+            Respond to request
+          </Button>
+        </Link>
+      );
+    }
+
+    return (
+      <Button
+        variant="secondary"
+        size="md"
+        disabled={!isAccepting}
+        onClick={() => { setMessage(''); setConnectModal(true); }}
+        title={!isAccepting ? 'Not accepting mentees' : undefined}
+      >
+        <UserPlus size={14} />
+        {isMentor ? 'Request mentorship' : 'Connect'}
+      </Button>
+    );
+  };
 
   return (
     <div className="flex flex-col gap-6 max-w-3xl mx-auto">
@@ -101,23 +182,22 @@ const PublicProfile = () => {
             </div>
           </div>
 
-          {/* Action buttons (disabled — coming soon) */}
+          {/* Action buttons */}
           <div className="flex flex-col gap-2 flex-shrink-0 sm:ml-auto">
+            <ConnectButton />
+
+            {/* Message — disabled until Module 5 */}
             <div className="relative group">
-              <button disabled className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border border-[var(--color-border)] text-[var(--color-muted-foreground)] opacity-50 cursor-not-allowed">
-                <UserPlus size={14} />Connect
-              </button>
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded text-xs bg-[var(--color-surface-raised)] text-[var(--color-muted-foreground)] whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 border border-[var(--color-border)]">
-                Coming soon
-              </div>
-            </div>
-            <div className="relative group">
-              <button disabled className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-[var(--color-accent)] text-white opacity-50 cursor-not-allowed">
-                <MessageCircle size={14} />Message
-              </button>
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded text-xs bg-[var(--color-surface-raised)] text-[var(--color-muted-foreground)] whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 border border-[var(--color-border)]">
-                Coming soon
-              </div>
+                <button
+                  disabled
+                  aria-label="Message (coming soon)"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-[var(--color-accent)] text-white opacity-40 cursor-not-allowed w-full justify-center"
+                >
+                  <MessageCircle size={14} />Message
+                </button>
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded text-xs bg-[var(--color-surface-raised)] text-[var(--color-muted-foreground)] whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 border border-[var(--color-border)]">
+                  Coming in Module 5
+                </div>
             </div>
           </div>
         </div>
@@ -242,6 +322,31 @@ const PublicProfile = () => {
           </div>
         </Card>
       )}
+
+      {/* Connect modal */}
+      <Modal
+        open={connectModal}
+        onClose={() => setConnectModal(false)}
+        title={isMentor ? `Request mentorship from ${user.name}` : `Connect with ${user.name}`}
+        description={isMentor ? "Tell them why you'd like them as your mentor (optional)." : 'Add a personal note to your request (optional).'}
+        footer={
+          <>
+            <Button variant="ghost" size="sm" onClick={() => setConnectModal(false)}>Cancel</Button>
+            <Button variant="primary" size="sm" onClick={handleConnect} isLoading={isSending} disabled={isSending}>
+              Send request
+            </Button>
+          </>
+        }
+      >
+        <Textarea
+          placeholder="Write a short message… (optional)"
+          value={message}
+          onChange={(e) => setMessage(e.target.value.slice(0, 300))}
+          rows={3}
+          aria-label="Request message"
+        />
+        <p className="mt-1 text-right text-xs text-[var(--color-muted-foreground)]">{message.length}/300</p>
+      </Modal>
     </div>
   );
 };

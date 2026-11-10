@@ -13,6 +13,8 @@ const errorHandler = require('./middleware/errorHandler');
 const healthRouter = require('./routes/health');
 const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
+const matchRouter = require('./routes/matchRoutes');
+const connectionRouter = require('./routes/connectionRoutes');
 
 // ── Database ──────────────────────────────────────────────────────────────────
 connectDB();
@@ -58,6 +60,8 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use('/api', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/matches', matchRouter);
+app.use('/api/connections', connectionRouter);
 
 // ── 404 handler ───────────────────────────────────────────────────────────────
 app.use((_req, res) => {

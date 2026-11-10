@@ -1,0 +1,21 @@
+/**
+ * routes/validationHelpers.js
+ * Shared express-validator middleware to send 422 on validation errors.
+ */
+
+const { validationResult } = require('express-validator');
+
+const validationErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      success: false,
+      message: 'Validation failed',
+      errors: errors.array().map((e) => ({ field: e.path, message: e.msg })),
+    });
+  }
+  next();
+};
+
+module.exports = { validationErrors };
+
