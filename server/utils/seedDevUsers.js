@@ -20,6 +20,10 @@ if (process.env.NODE_ENV === 'production') {
 
 const mongoose = require('mongoose');
 const User = require('../models/User');
+const Connection = require('../models/Connection');
+const Conversation = require('../models/Conversation');
+const Room = require('../models/Room');
+const Message = require('../models/Message');
 
 const { DEV_SEED_PASSWORD, MONGO_URI } = process.env;
 
@@ -286,6 +290,114 @@ const seed = async () => {
         console.log(`[seed:dev-users] Created: ${email}`);
       }
     }
+
+    console.log('[seed:dev-users] Done seeding users.');
+
+    // ── Module 5: Connections + Rooms + Messages ────────────────────────────
+    const getUser = async (email) => User.findOne({ email: email.toLowerCase() }).lean();
+
+    const arjun = await getUser('arjun.dev@skillsync.test');
+    const zara = await getUser('zara.dev@skillsync.test');
+    const priya = await getUser('priya.dev@skillsync.test');
+    const liam = await getUser('liam.dev@skillsync.test');
+    const neha = await getUser('neha.mentor@skillsync.test');
+    const james = await getUser('james.mentor@skillsync.test');
+
+    // Create accepted connections (idempotent)
+    const ensureConnection = async (a, b, type = 'peer') => {
+      const existing = await Connection.findOne({
+        $or: [
+          { requester: a._id, recipient: b._id, type, status: 'accepted' },
+          { requester: b._id, recipient: a._id, type, status: 'accepted' },
+        ],
+      });
+      if (!existing) {
+        await Connection.create({ requester: a._id, recipient: b._id, type, status: 'accepted', respondedAt: new Date() });
+        console.log(`[seed:dev-users] Connection: ${a.name} ↔ ${b.name} (${type})`);
+      }
+    };
+
+    await ensureConnection(arjun, zara);
+    await ensureConnection(arjun, priya);
+    await ensureConnection(arjun, liam);
+    await ensureConnection(zara, priya);
+    await ensureConnection(arjun, neha, 'mentorship');
+    await ensureConnection(priya, james, 'mentorship');
+
+    // Create a DM conversation between Arjun and Zara with sample messages
+    const sortedPair = (a, b) => [String(a), String(b)].sort();
+    const [pA, pB] = sortedPair(arjun._id, zara._id);
+
+    let conv = await Conversation.findOne({ participants: [pA, pB] });
+    if (!conv) {
+      conv = await Conversation.create({ participants: [pA, pB] });
+      const msgs = [
+        { sender: arjun._id, text: 'Hey Zara! Saw your profile — love your design system work 👀' },
+        { sender: zara._id, text: 'Thanks Arjun! Your React projects look great too. Want to collaborate on something?' },
+        { sender: arjun._id, text: 'Absolutely! I\'ve been thinking of building a component library. Interested?' },
+        { sender: zara._id, text: 'Yes! Let\'s set up a time to discuss. I\'m free Saturday morning.' },
+      ];
+      let lastMsg;
+      for (const m of msgs) {
+        lastMsg = await Message.create({ conversation: conv._id, ...m });
+      }
+      await Conversation.updateOne({ _id: conv._id }, {
+        $set: { lastMessage: { text: 'Yes! Let\'s set up a time to discuss.', sender: zara._id, createdAt: lastMsg.createdAt } },
+      });
+      console.log('[seed:dev-users] Created DM conversation: Arjun ↔ Zara');
+    }
+
+    // Create public rooms
+    const ensureRoom = async (name, description, tags, ownerUser, otherMembers, sampleMessages) => {
+      let room = await Room.findOne({ name, isArchived: false });
+      if (!room) {
+        room = await Room.create({
+          name,
+          description,
+          tags,
+          visibility: 'public',
+          owner: ownerUser._id,
+          members: [
+            { user: ownerUser._id, role: 'owner', joinedAt: new Date() },
+            ...otherMembers.map((u) => ({ user: u._id, role: 'member', joinedAt: new Date() })),
+          ],
+        });
+        for (const { sender, text } of sampleMessages) {
+          await Message.create({ room: room._id, sender: sender._id, text });
+        }
+        await Room.updateOne({ _id: room._id }, { $set: { lastMessageAt: new Date() } });
+        console.log(`[seed:dev-users] Created room: ${name}`);
+      }
+    };
+
+    await ensureRoom(
+      'React & Frontend Dev',
+      'A place to discuss React, TypeScript, design systems, and modern frontend development.',
+      ['React', 'TypeScript', 'Frontend'],
+      zara,
+      [arjun, priya, liam],
+      [
+        { sender: zara, text: 'Welcome everyone! Let\'s share tips and projects 🚀' },
+        { sender: arjun, text: 'Great room! I just finished setting up a Vite + React monorepo. Happy to share the config.' },
+        { sender: liam, text: 'Looking forward to learning from you all. I\'m transitioning from backend.' },
+        { sender: priya, text: 'TypeScript has been a game-changer for me. Highly recommend everyone switches!' },
+      ]
+    );
+
+    await ensureRoom(
+      'AI & Machine Learning',
+      'Deep learning, NLP, MLOps, and all things AI. Students and mentors welcome!',
+      ['AI', 'ML', 'Python', 'Deep Learning'],
+      priya,
+      [arjun, james, neha],
+      [
+        { sender: priya, text: 'Hey everyone! This room is for all AI/ML enthusiasts 🧠' },
+        { sender: james, text: 'Great initiative Priya! I can share some resources on MLOps from my work at Anthropic.' },
+        { sender: arjun, text: 'I\'ve been wanting to get into ML. What should I learn first?' },
+        { sender: james, text: 'Start with Python fundamentals, then numpy/pandas, then scikit-learn. I\'ll post a roadmap.' },
+        { sender: neha, text: 'Happy to mentor anyone interested in the ML engineering side of things!' },
+      ]
+    );
 
     console.log('[seed:dev-users] Done.');
   } catch (err) {

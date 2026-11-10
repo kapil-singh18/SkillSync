@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { GitBranch, ExternalLink, Globe, GraduationCap, Star, MapPin, Calendar, MessageCircle, UserPlus, CheckCircle, Clock } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import Card from '../components/ui/Card';
@@ -20,6 +20,7 @@ const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const PublicProfile = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { fetchPublicProfile, isLoading } = useProfileStore();
   const { fetchStatus, sendRequest, statusByUser } = useConnectionStore();
   const { user: me } = useAuthStore();
@@ -186,19 +187,29 @@ const PublicProfile = () => {
           <div className="flex flex-col gap-2 flex-shrink-0 sm:ml-auto">
             <ConnectButton />
 
-            {/* Message — disabled until Module 5 */}
-            <div className="relative group">
+              {/* Message button — enabled once connected */}
+              {connectionStatus === 'accepted' ? (
                 <button
-                  disabled
-                  aria-label="Message (coming soon)"
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-[var(--color-accent)] text-white opacity-40 cursor-not-allowed w-full justify-center"
+                  onClick={() => navigate(`/chat?user=${id}`)}
+                  aria-label="Send message"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] transition-colors w-full justify-center"
                 >
-                  <MessageCircle size={14} />Message
+                  <MessageCircle size={14} /> Message
                 </button>
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded text-xs bg-[var(--color-surface-raised)] text-[var(--color-muted-foreground)] whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 border border-[var(--color-border)]">
-                  Coming in Module 5
-                </div>
-            </div>
+              ) : (
+                <div className="relative group">
+                  <button
+                    disabled
+                    aria-label="Message (connect first)"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-[var(--color-accent)] text-white opacity-40 cursor-not-allowed w-full justify-center"
+                  >
+                    <MessageCircle size={14} /> Message
+                  </button>
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded text-xs bg-[var(--color-surface-raised)] text-[var(--color-muted-foreground)] whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 border border-[var(--color-border)]">
+                    Connect first to message
+                  </div>
+              </div>
+            )}
           </div>
         </div>
       </Card>

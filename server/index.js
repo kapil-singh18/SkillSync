@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const http = require('http');
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -15,11 +16,17 @@ const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
 const matchRouter = require('./routes/matchRoutes');
 const connectionRouter = require('./routes/connectionRoutes');
+const chatRouter = require('./routes/chatRoutes');
+const { initSocket } = require('./socket');
 
 // ── Database ──────────────────────────────────────────────────────────────────
 connectDB();
 
 const app = express();
+const httpServer = http.createServer(app);
+
+// ── Socket.IO ─────────────────────────────────────────────────────────────────
+initSocket(httpServer);
 
 // ── Security middleware ───────────────────────────────────────────────────────
 app.use(helmet());
@@ -32,7 +39,7 @@ app.use(
 );
 
 const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 200,
   standardHeaders: true,
   legacyHeaders: false,
@@ -62,6 +69,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/matches', matchRouter);
 app.use('/api/connections', connectionRouter);
+app.use('/api/chat', chatRouter);
 
 // ── 404 handler ───────────────────────────────────────────────────────────────
 app.use((_req, res) => {
@@ -74,7 +82,7 @@ app.use(errorHandler);
 // ── Start server ──────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
 

@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import Logo from '../ui/Logo';
 import useSidebarStore from '../../store/sidebarStore';
+import useChatStore from '../../store/chatStore';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -34,7 +35,7 @@ const navItems = [
   { to: '/profile', label: 'Profile', icon: UserCircle },
 ];
 
-const NavItem = ({ item, collapsed }) => {
+const NavItem = ({ item, collapsed, badge }) => {
   const { icon: Icon, to, label } = item;
 
   return (
@@ -57,16 +58,28 @@ const NavItem = ({ item, collapsed }) => {
       >
         {({ isActive }) => (
           <>
-            <Icon
-              size={18}
-              className={[
-                'flex-shrink-0 transition-colors duration-150',
-                isActive ? 'text-[var(--color-accent)]' : 'text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)]',
-              ].join(' ')}
-              aria-hidden="true"
-              strokeWidth={isActive ? 2.5 : 2}
-            />
-            {!collapsed && <span>{label}</span>}
+            <span className="relative flex-shrink-0">
+              <Icon
+                size={18}
+                className={[
+                  'transition-colors duration-150',
+                  isActive ? 'text-[var(--color-accent)]' : 'text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)]',
+                ].join(' ')}
+                aria-hidden="true"
+                strokeWidth={isActive ? 2.5 : 2}
+              />
+              {badge > 0 && collapsed && (
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[var(--color-accent)] text-white text-[8px] font-bold flex items-center justify-center">
+                  {badge > 9 ? '9+' : badge}
+                </span>
+              )}
+            </span>
+            {!collapsed && <span className="flex-1">{label}</span>}
+            {!collapsed && badge > 0 && (
+              <span className="ml-auto rounded-full bg-[var(--color-accent)] text-white text-[10px] font-bold px-1.5 py-0.5 min-w-[18px] text-center leading-none">
+                {badge > 99 ? '99+' : badge}
+              </span>
+            )}
           </>
         )}
       </NavLink>
@@ -76,6 +89,7 @@ const NavItem = ({ item, collapsed }) => {
 
 const SidebarContent = ({ collapsed, onMobileClose }) => {
   const toggleCollapsed = useSidebarStore((s) => s.toggleCollapsed);
+  const unreadTotal = useChatStore((s) => s.unreadTotal);
 
   return (
     <div className="flex flex-col h-full">
@@ -118,7 +132,12 @@ const SidebarContent = ({ collapsed, onMobileClose }) => {
       <nav className="flex-1 overflow-y-auto py-3 px-2" aria-label="Main navigation">
         <ul className="flex flex-col gap-0.5" role="list">
           {navItems.map((item) => (
-            <NavItem key={item.to} item={item} collapsed={collapsed} />
+            <NavItem
+              key={item.to}
+              item={item}
+              collapsed={collapsed}
+              badge={item.to === '/chat' ? unreadTotal : 0}
+            />
           ))}
         </ul>
       </nav>

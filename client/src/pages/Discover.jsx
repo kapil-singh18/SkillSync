@@ -239,15 +239,16 @@ const MyNetworkTab = () => {
                 )}
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  disabled
-                  title="Coming soon in Module 5"
-                  aria-label="Message (coming soon)"
-                >
-                  <MessageCircle size={14} />
-                </Button>
+                <Link to={`/chat?user=${other?._id}`}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    aria-label={`Message ${other?.name}`}
+                    title="Send a message"
+                  >
+                    <MessageCircle size={14} />
+                  </Button>
+                </Link>
                 <Button
                   size="sm"
                   variant="ghost"
